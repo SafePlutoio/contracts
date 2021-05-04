@@ -1,13 +1,13 @@
 pragma solidity ^0.6.12;
 
-import "@openzeppelin/contracts/utils/Context.sol";
+import "@openzeppelin/contracts/GSN/Context.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@uniswap/v2-core/contracts/interfaces/IUniswapV2Factory.sol";
 import "@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router02.sol";
 
-contract SAFEPLUTO is Context, IERC20, Ownable {
+contract SafePluto is Context, IERC20, Ownable {
     using SafeMath for uint256;
 
     mapping(address => uint256) private _rOwned;
@@ -59,8 +59,9 @@ contract SAFEPLUTO is Context, IERC20, Ownable {
         inSwapAndLiquify = false;
     }
 
-    constructor() public {
-        _rOwned[_msgSender()] = _rTotal;
+    constructor(address ownerAddress) public {
+        transferOwnership(ownerAddress);
+        _rOwned[ownerAddress] = _rTotal;
 
         IUniswapV2Router02 _pancakeswapV2Router =
             IUniswapV2Router02(0x10ED43C718714eb63d5aA57B78B54704E256024E);
@@ -75,7 +76,7 @@ contract SAFEPLUTO is Context, IERC20, Ownable {
         _isExcludedFromFee[owner()] = true;
         _isExcludedFromFee[address(this)] = true;
 
-        emit Transfer(address(0), _msgSender(), _tTotal);
+        emit Transfer(address(0), ownerAddress, _tTotal);
     }
 
     function name() public view returns (string memory) {

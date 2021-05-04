@@ -1,5 +1,7 @@
-const SafePluto = artifacts.require("SafePluto");
+const SafePluto = artifacts.require('SafePluto');
 
-module.exports = function (deployer) {
-  deployer.deploy(SafePluto);
+const owner = '';
+
+module.exports = async function (deployer) {
+  await deployer.deploy(SafePluto, owner);
 };
